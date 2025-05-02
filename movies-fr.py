@@ -1,16 +1,32 @@
-#!/usr/bin/python3
+import os
+import time
+import sys
+import internetarchive as ia
+from internetarchive.session import ArchiveSession
+from internetarchive import get_item
+from internetarchive import download
 
-import internetarchive
+search = ia.search_items('collection:%s' % sys.argv[1])
 
-# Search for items with the keyword "test"
-search_results = internetarchive.search_items('test')
+num = 0
 
-# Iterate through the search results and print the item identifiers
-for result in search_results:
-	print(result['identifier'])
-
-# Search for items in the "audio" collection with the keyword "radio"
-search_results = internetarchive.search_items('radio', collection='audio')
-
-# Print the total number of search results
-print(search_results.total)
+for result in search: #for all items in a collection
+	num = num + 1 #item count
+	itemid = result['identifier']
+	#title = get_item(itemid).item_metadata['metadata']['title']
+	#language = get_item(itemid).item_metadata['metadata']['language']
+	print('Downloading: #' + str(num) + '\t' + itemid)
+	try:
+		#download(itemid) 
+		print(itemid)
+		print('\t\t Download success.')
+	except Exception as e:
+		print("Error Occurred downloading () = {}".format(itemid, e))
+	print('Pausing for 40 minutes')
+	#time.sleep(2400)# IA restricts the number of things you can download. Be nice to 
+			# their servers -- limit how much you download, too. For me, this
+			# time restriction is still not polite enough, and my connection gets
+			# cut off all the dang time.
+    
+    
+    
